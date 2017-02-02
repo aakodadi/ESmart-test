@@ -7,31 +7,17 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.github.mikephil.charting.data.Entry;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import okio.Buffer;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import test.esmart.com.esmart_test.model.Device;
 import test.esmart.com.esmart_test.model.WifiSignal;
-import test.esmart.com.esmart_test.model.WifiSignalSerializer;
 
 public class WifiScanService extends Service {
 
