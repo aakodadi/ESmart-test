@@ -27,5 +27,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.1'
     // MPAndroidChart library to draw charts
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
+    // Retrofit is used to interface with the web API
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
     testCompile 'junit:junit:4.12'
 }
