@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ESmart-test</string>
+    <string name="wifiscan_service_description">Scanning WiFi Signals</string>
+</resources>
