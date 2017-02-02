@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ESmart-test</string>
-    <string name="wifiscan_service_description">Scanning WiFi Signals</string>
+    <string name="wifiscan_service_description">Scanning WiFi signals</string>
+    <string name="remote_api_service_description">Sends WiFi signals data to server</string>
 </resources>

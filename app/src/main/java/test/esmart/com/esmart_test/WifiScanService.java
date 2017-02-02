@@ -12,15 +12,31 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.github.mikephil.charting.data.Entry;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okio.Buffer;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import test.esmart.com.esmart_test.model.Device;
+import test.esmart.com.esmart_test.model.WifiSignal;
+import test.esmart.com.esmart_test.model.WifiSignalSerializer;
+
 public class WifiScanService extends Service {
 
     private static final String TAG = "WifiScanService";
+    private static final String BASE_URL = "https://esmart-test-api.herokuapp.com";
 
     private IBinder mBinder;
     private WifiManager mWifiManager;
@@ -59,10 +75,6 @@ public class WifiScanService extends Service {
                         e.printStackTrace();
                     }
                     Log.d(TAG, "Counter: " + counter);
-
-                    Log.d(TAG, "-------------->>>>>>" + Settings.Secure.getString(
-                            getApplicationContext().getContentResolver(),
-                            Settings.Secure.ANDROID_ID));
                 }
             }
         };
@@ -101,11 +113,14 @@ public class WifiScanService extends Service {
         if (mWifiManager.isWifiEnabled()) {
 
             List<ScanResult> wifiList = mWifiManager.getScanResults();
+            List<WifiSignal> signals = new ArrayList<>();
 
             for (ScanResult scanResult : wifiList) {
 
                 int RSSI = scanResult.level;
                 String SSID = scanResult.SSID;
+
+                WifiSignal signal = new WifiSignal(RSSI, SSID);
 
                 Entry entry = new Entry(counter * 5, RSSI);
 
@@ -121,9 +136,10 @@ public class WifiScanService extends Service {
                     wifiData.put(SSID, list);
 
                 }
+                signals.add(signal);
 
             }
-            runOnScanFinishedListenerList();
+            runOnScanFinishedListenerList(signals);
         }
 
         counter++;
@@ -140,9 +156,9 @@ public class WifiScanService extends Service {
         }
     }
 
-    private void runOnScanFinishedListenerList() {
+    private void runOnScanFinishedListenerList(List<WifiSignal> signals) {
         for (OnScanFinishedListener l : onScanFinishedListenerList) {
-            l.onScanFinished(wifiData);
+            l.onScanFinished(wifiData, signals);
         }
     }
 
@@ -153,7 +169,7 @@ public class WifiScanService extends Service {
     }
 
     public interface OnScanFinishedListener {
-        void onScanFinished(Map<String, List<Entry>> wifiData);
+        void onScanFinished(Map<String, List<Entry>> wifiData, List<WifiSignal> signals);
     }
 
     @Override

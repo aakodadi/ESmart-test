@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,6 +23,12 @@
 
         <service android:name=".WifiScanService"
             android:description="@string/wifiscan_service_description"
+            android:enabled="true"
+            android:exported="false">
+        </service>
+
+        <service android:name=".RemoteAPIService"
+            android:description="@string/remote_api_service_description"
             android:enabled="true"
             android:exported="false">
         </service>
