@@ -46,7 +46,7 @@ public class RemoteAPIService extends Service {
     private WifiScanService mWifiScanService;
 
     private Thread mThread;
-    private boolean running;
+    private boolean running = false;
 
     @Override
     public void onCreate() {
@@ -95,18 +95,22 @@ public class RemoteAPIService extends Service {
     }
 
     public void start() {
-        running = true;
-        mThread.start();
+        if(!running) {
+            running = true;
+            mThread.start();
+        }
     }
 
     public void stop() {
-        running = false;
-        while (mThread.isAlive()) {
-            // Does nothing just waits for the thread to die
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        if (running) {
+            running = false;
+            while (mThread.isAlive()) {
+                // Does nothing just waits for the thread to die
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

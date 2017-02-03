@@ -22,12 +22,11 @@ import test.esmart.com.esmart_test.model.WifiSignal;
 public class WifiScanService extends Service {
 
     private static final String TAG = "WifiScanService";
-    private static final String BASE_URL = "https://esmart-test-api.herokuapp.com";
 
     private IBinder mBinder;
     private WifiManager mWifiManager;
     private Thread mThread;
-    private boolean running;
+    private boolean running = false;
 
     /*
      * permits clients to listen to scan finished event (Observer pattern)
@@ -78,18 +77,22 @@ public class WifiScanService extends Service {
     }
 
     public void start() {
-        running = true;
-        mThread.start();
+        if (!running) {
+            running = true;
+            mThread.start();
+        }
     }
 
     public void stop() {
-        running = false;
-        while (mThread.isAlive()) {
-            // Does nothing just waits for the thread to die
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        if (running) {
+            running = false;
+            while (mThread.isAlive()) {
+                // Does nothing just waits for the thread to die
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
